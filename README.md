@@ -1,1 +1,1 @@
-# ECS163_CaliforniaDrought_DataVisualization_FinalProject
+# Visualization of California's Recent Drought
