@@ -1,0 +1,104 @@
+<html>
+<head>
+	<title></title>
+<style>
+
+.axis--x path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+</style>
+<script src="./scripts/d3.v4.min.js"></script>
+<script src="./scripts/topojson.v1.min.js"></script>
+<script src="./scripts/main.js" defer></script>
+
+<link type = "text/css" rel = "stylesheet" href="styles/bootstrap.css"/>
+<link type = "text/css" rel = "stylesheet" href="styles/styles.css"/>
+
+</head>
+
+
+<body>
+	<div id='bg'>
+		<div id='bgtext'>
+			<h1>California Drought Levels 2000-2017</h1>
+			<h2>Click on a year, drought level, and county to show the data!</h2>
+		</div>
+	</div>
+<br>
+	<div id="tooltip"></div>
+	<label id = "years">
+		<p class = "d-inline"> <strong> Year: </strong> </p>
+		<button class="btn btn-primary" id="2000" onclick="updateYear(this.id); updateFill();">2000</button>
+		<button class="btn btn-primary" id="2001" onclick="updateYear(this.id); updateFill();">2001</button>
+				<button class="btn btn-primary" id="2002" onclick="updateYear(this.id); updateFill();">2002</button>
+				<button class="btn btn-primary" id="2003" onclick="updateYear(this.id); updateFill();">2003</button>
+				<button class="btn btn-primary" id="2004" onclick="updateYear(this.id); updateFill();">2004</button>
+				<button class="btn btn-primary" id="2005" onclick="updateYear(this.id); updateFill();">2005</button>
+				<button class="btn btn-primary" id="2006" onclick="updateYear(this.id); updateFill();">2006</button>
+				<button class="btn btn-primary" id="2007" onclick="updateYear(this.id); updateFill();">2007</button>
+				<button class="btn btn-primary" id="2008" onclick="updateYear(this.id); updateFill();">2008</button>
+				<button class="btn btn-primary" id="2009" onclick="updateYear(this.id); updateFill();">2009</button>
+				<button class="btn btn-primary" id="2010" onclick="updateYear(this.id); updateFill();">2010</button>
+				<button class="btn btn-primary" id="2011" onclick="updateYear(this.id); updateFill();">2011</button>
+				<button class="btn btn-primary" id="2012" onclick="updateYear(this.id); updateFill();">2012</button>
+				<button class="btn btn-primary" id="2013" onclick="updateYear(this.id); updateFill();">2013</button>
+				<button class="btn btn-primary" id="2014" onclick="updateYear(this.id); updateFill();">2014</button>
+				<button class="btn btn-primary" id="2015" onclick="updateYear(this.id); updateFill();">2015</button>
+				<button class="btn btn-primary" id="2016" onclick="updateYear(this.id); updateFill();">2016</button>
+				<button class="btn btn-primary" id="2017" onclick="updateYear(this.id); updateFill();">2017</button>
+			</label>
+
+
+			<div id = "drought_levels">
+				<p class = "d-inline"> <strong> Drought Level: </strong> </p>
+				<button class = "btn btn-primary" id="none" onclick = "updateDrought(this.id); updateFill(); " >None</button>
+				<button class = "btn btn-primary" id="short_term" onclick = "updateDrought(this.id); updateFill(); ">Short Term</button>
+				<button class = "btn btn-primary" id="moderate" onclick = "updateDrought(this.id); updateFill(); ">Moderate</button>
+				<button class = "btn btn-primary" id="severe" onclick = "updateDrought(this.id); updateFill(); ">Severe</button>
+				<button class = "btn btn-primary" id="extreme" onclick = "updateDrought(this.id); updateFill(); ">Extreme</button>
+				<button class = "btn btn-primary" id="exceptional" onclick = "updateDrought(this.id); updateFill(); ">Exceptional</button>
+			</div>
+
+	<div class="graphs">
+			<div id ="map" >
+				<h2 id='mapTitle'>Map of drought levels per county in California</h2>
+
+			<!-- <div id = "drought_levels">
+			    <p class = "d-inline"> <strong> Drought Level: </strong> </p>
+			    <button class = "btn btn-primary" id="none" onclick = "updateDrought(this.id); updateFill(); updateData('Riverside County',this.id, '#069FBC', '#LineG' )" >None</button>
+			    <button class = "btn btn-primary" id="short_term" onclick = "updateDrought(this.id); updateFill(); updateData('Los Angeles County',this.id, '#80ff00', '#LineG')">Short Term</button>
+			    <button class = "btn btn-primary" id="moderate" onclick = "updateDrought(this.id); updateFill(); updateData('Yolo County',this.id, '##ffff00', '#LineG')">Moderate</button>
+			    <button class = "btn btn-primary" id="severe" onclick = "updateDrought(this.id); updateFill(); updateData('San Francisco County', this.id, '#ffbf00', '#LineG')">Severe</button>
+			    <button class = "btn btn-primary" id="extreme" onclick = "updateDrought(this.id); updateFill(); updateData('Marin County',this.id, '#ff0000', '#LineG')">Extreme</button>
+			    <button class = "btn btn-primary" id="exceptional" onclick = "updateDrought(this.id); updateFill(); updateData('Alameda County',this.id, '#4E0202', '#LineG')">Exceptional</button>
+			</div> -->
+
+			<!-- <div id = "drought_levels">
+				<p class = "d-inline"> <strong> Drought Level: </strong> </p>
+				<button class = "btn btn-primary" id="none" onclick = "updateDrought(this.id); updateFill(); updateLineGraph('cliced',this.id,'#LineG');" >None</button>
+				<button class = "btn btn-primary" id="short_term" onclick = "updateDrought(this.id); updateFill(); updateLineGraph('Sonoma County',this.id,'#LineG');">Short Term</button>
+				<button class = "btn btn-primary" id="moderate" onclick = "updateDrought(this.id); updateFill(); updateLineGraph('Yolo County',this.id,'#LineG');">Moderate</button>
+				<button class = "btn btn-primary" id="severe" onclick = "updateDrought(this.id); updateFill(); updateLineGraph('San Francisco County',this.id,'#LineG');">Severe</button>
+				<button class = "btn btn-primary" id="extreme" onclick = "updateDrought(this.id); updateFill();updateLineGraph('Marin County',this.id,'#LineG');">Extreme</button>
+				<button class = "btn btn-primary" id="exceptional" onclick = "updateDrought(this.id); updateFill(); updateLineGraph('Alameda County',this.id,'#LineG');">Exceptional</button>
+			</div>
+ -->
+
+
+
+	</div>
+	<div id="radBar" ></div>
+	<div id="lineG" ></div>
+</div>
+</body>
+</html>
+
+
+
